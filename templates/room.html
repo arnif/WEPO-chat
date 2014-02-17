@@ -1,10 +1,36 @@
 <div class="container">
-	<h1>Welcome to {{ roomName }}</h1>
+	<h2>Welcome to {{ roomName }} 	<button class="btn btn-success">Join Room</button>
+	<button class="btn btn-primary" ng-click="createRoom()">Create Room</button></h2>
+
+<div class="overlay-box" id="create-room">
+<h4>Create chat room</h4>
+
+
+<div class="row">
+<div class="col-lg-6">
+<div class="input-group">
+<input ng-model="roomname" class="form-control" placeholder="Room name" id="room-name">
+<span class="input-group-btn">
+<button class="btn btn-primary" type="button" ng-click="create()">Create!</button>
+</span>
+</div><!-- /input-group -->
+</div><!-- /.col-lg-6 -->
+</div><!-- /.row -->
+
+
+<!-- <input ng-model="username" placeholder="Insert name here"> -->
+<!-- <button ng-click="connect()">Connect!</button> -->
+<span ng-bind="message" class="error-msg alert alert-danger"></span>
+
+</div>
+
+
+
 	<div class="well">
 		<div class="row">
 			<div class="col-md-9 col-xs-9">
-				<ul style="list-style: none">
-					<li ng-repeat="message in messages">
+				<ul style="list-style: none" class="chat-window">
+					<li ng-repeat="message in messages" class="chat-msg">
 						<span>
 							<strong>[{{ message.timestamp | date:"HH:mm:ss" }}]:</strong>
 							<strong>
@@ -16,7 +42,6 @@
 				</ul>
 			</div>
 			<div class="col-md-3 col-xs-3">
-				<p>Users</p>
 				<ul>
 					<li ng-repeat="user in users">
 						{{ user }}
