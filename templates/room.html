@@ -1,0 +1,30 @@
+<div class="container">
+	<h1>Welcome to {{ roomName }}</h1>
+	<div class="well">
+		<div class="row">
+			<div class="col-md-9 col-xs-9">
+				<ul style="list-style: none">
+					<li ng-repeat="message in messages">
+						<span>
+							<strong>[{{ message.timestamp | date:"HH:mm:ss" }}]:</strong>
+							<strong>
+								{{ message.nick }}
+							</strong>
+							{{ message.message }}
+						</span>
+					</li>
+				</ul>
+			</div>
+			<div class="col-md-3 col-xs-3">
+				<p>Users</p>
+				<ul>
+					<li ng-repeat="user in users">
+						{{ user }}
+					</li>
+				</ul>
+			</div>
+		</div>
+	</div>
+	<input ng-model="currentMessage" class="form-control" ng-keypress="keyPress($event)" />
+	<button ng-click="send()">Send!</button>
+</div>
