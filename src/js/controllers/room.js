@@ -9,7 +9,12 @@ app.controller("RoomController", ["$scope", "$routeParams", "$location", "Socket
 
 	if(socket) {
 		socket.emit("joinroom", { room: $scope.roomName, pass: "" }, function(success, errorMessage) {
+			console.log(errorMessage);
 
+			if(errorMessage === "banned")
+			{
+				$location.path("/room/lobby");
+			}
 		});
 
 
@@ -47,6 +52,15 @@ app.controller("RoomController", ["$scope", "$routeParams", "$location", "Socket
 
 		});
 
+		socket.on("banned", function(room, me) {
+			// console.log("hoho " + me);
+
+			if (me === meUser) {
+				$location.path("/room/lobby");
+			}
+
+		});
+
 
 	}
 
@@ -71,7 +85,21 @@ app.controller("RoomController", ["$scope", "$routeParams", "$location", "Socket
 						}
 				});
 				
-			} else {
+			} 
+			if(split[0] === '/ban') {
+				var userToBan = split[1];
+
+				socket.emit("ban", { user: userToBan, room: $scope.roomName }, function(success) {
+					if(success) {
+						console.log(userToBan + " has been banned");
+					}
+					else {
+						console.log("failed to ban");
+					}
+				});
+			}
+
+			else {
 
 				console.log("I sent a message to " + $scope.roomName + ": " + $scope.currentMessage);
 				socket.emit("sendmsg", { roomName: $scope.roomName, msg: $scope.currentMessage });
