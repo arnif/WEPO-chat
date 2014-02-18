@@ -99,6 +99,19 @@ app.controller("RoomController", ["$scope", "$routeParams", "$location", "Socket
 				});
 			}
 
+			if(split[0] === '/unban') {
+				var userToUnban = split[1];
+
+				socket.emit("unban", { user: userToUnban, room: $scope.roomName }, function(success) {
+					if(success) {
+						console.log(userToUnban + " has been Unbanned");
+					}
+					else {
+						console.log("failed to unban");
+					}
+				});
+			}
+
 			else {
 
 				console.log("I sent a message to " + $scope.roomName + ": " + $scope.currentMessage);
