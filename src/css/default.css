@@ -30,6 +30,18 @@ li {
 
 #inn {
 	z-index:0;
+	width:768px;
+}
+
+#chat-userlist {
+	width: 355px;
+	top: 104px;
+	position: absolute;
+	right: 216px
+}
+
+.sevensixfive {
+	width:765px;
 }
 
 #blackout {

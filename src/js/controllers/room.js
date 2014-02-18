@@ -5,18 +5,39 @@ app.controller("RoomController", ["$scope", "$routeParams", "$location", "Socket
 	var meUser = SocketService.getUsername();
 	$scope.userName = meUser;
 
+	var joinedRooms = SocketService.getJoinedRooms();
+
 	var socket = SocketService.getSocket();
+
+	console.log(joinedRooms);
+
+	$scope.rName = joinedRooms;	
+	
 
 	if(socket) {
 		socket.emit("joinroom", { room: $scope.roomName, pass: "" }, function(success, errorMessage) {
 			// console.log(errorMessage);
+
+			//check if already joined
+
+			console.log($.inArray($scope.roomName, joinedRooms));
+
+			if ($.inArray($scope.roomName, joinedRooms) < 0) {
+				// console.log("PUSH  " + $scope.roomName);
+				SocketService.addJoinedRoom($scope.roomName);
+				// console.log("JOINED...");
+				// console.log(joinedRooms);
+			} 
+
+			
+
 
 			if(errorMessage === "banned")
 			{
 				showError("You are banned from " + $scope.roomName);
 
 				$location.path("/room/lobby");
-			}
+			} 
 		});
 
 
@@ -30,8 +51,8 @@ app.controller("RoomController", ["$scope", "$routeParams", "$location", "Socket
 		});
 
 		socket.on("updateusers", function(rooms, users) {
-			console.log("USER");
-			console.log(users);
+			// console.log("USER");
+			// console.log(users);
 			if(rooms === $scope.roomName) {
 				$scope.users = users;
 				// $scope.apply();
@@ -41,7 +62,7 @@ app.controller("RoomController", ["$scope", "$routeParams", "$location", "Socket
 
 		socket.emit("rooms");
 		socket.on("roomlist", function(data) {
-			console.log(data);
+			// console.log(data);
 			$scope.rooms = Object.keys(data);
 			$scope.$apply();
 		});
@@ -51,6 +72,7 @@ app.controller("RoomController", ["$scope", "$routeParams", "$location", "Socket
 
 			if (me === meUser) {
 				console.log("im out");
+				SocketService.removeJoinedRoom($scope.roomName);
 				$location.path("/room/lobby");
 				showError("You have been kicked from " + $scope.roomName);
 			}
@@ -61,7 +83,8 @@ app.controller("RoomController", ["$scope", "$routeParams", "$location", "Socket
 			// console.log("hoho " + me);
 
 			if (me === meUser) {
-			
+
+				SocketService.removeJoinedRoom($scope.roomName);
 				showError("You have been banned from " + $scope.roomName);
 				
 				$location.path("/room/lobby");
@@ -82,7 +105,7 @@ app.controller("RoomController", ["$scope", "$routeParams", "$location", "Socket
 				var userToKick = split[1];
 
 				socket.emit("kick", { user: userToKick, room: $scope.roomName }, function(success) {
-						console.log(success);
+						// console.log(success);
 
 						if (success) {
 
@@ -127,7 +150,7 @@ app.controller("RoomController", ["$scope", "$routeParams", "$location", "Socket
 
 			else {
 
-				console.log("I sent a message to " + $scope.roomName + ": " + $scope.currentMessage);
+				// console.log("I sent a message to " + $scope.roomName + ": " + $scope.currentMessage);
 				socket.emit("sendmsg", { roomName: $scope.roomName, msg: $scope.currentMessage });
 
 			}
@@ -153,13 +176,14 @@ app.controller("RoomController", ["$scope", "$routeParams", "$location", "Socket
 
 	$scope.create = function() {
 			var n = $("#room-name").val();
-			console.log("name " +n);
+			console.log("creat roomname " +n);
 			$("#blackout").fadeOut();
 			$("#create-room").fadeOut();
 			
 			socket.emit("joinroom", { room: n, pass: "" }, function(success, errorMessage) {
 				if (success) {
 					$location.path("/room/" + n);
+
 				}
 			});
 
@@ -178,9 +202,19 @@ app.controller("RoomController", ["$scope", "$routeParams", "$location", "Socket
 			console.log("cant leave lobby");
 		} else {
 			socket.emit("partroom", $scope.roomName);
+			SocketService.removeJoinedRoom($scope.roomName);
 			$location.path("/room/lobby");
 		}	
 		
+	};
+
+	$scope.setActive = function(activate) {
+		// console.log(activate);
+
+		if ($scope.roomName === activate){
+			// console.log(activate + " is active");
+			return "active primary";
+		}
 	};
 
 	function showError(stuff) {

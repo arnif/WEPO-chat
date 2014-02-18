@@ -33,10 +33,18 @@
   <button type="button" class="close" data-dismiss="alert">&times;</button>
  <span id="mmsg"></span>
 </div>
-
-	<div class="well">
-		<div class="row">
-			<div class="col-md-9 col-xs-9">
+<ul class="nav nav-tabs sevensixfive">
+  <li ng-repeat="ro in rName" ng-class="setActive(ro)">
+		<a ng-href="#/room/{{ro}}">{{ro}}</a>
+	</li>
+</ul>
+<div class="whole-shit">
+	<div class="panel panel-default sevensixfive">
+		<div class="panel-heading">
+    <h3 class="panel-title">Topic!</h3>
+  	</div>
+		<div class="panel-body">
+			
 				<ul style="list-style: none" class="chat-window">
 					<li ng-repeat="message in messages" class="chat-msg">
 						<span>
@@ -48,16 +56,26 @@
 						</span>
 					</li>
 				</ul>
-			</div>
-			<div class="col-md-3 col-xs-3">
-				<ul>
-					<li ng-repeat="user in users">
-						{{ user }}
-					</li>
-				</ul>
-			</div>
+		
 		</div>
 	</div>
+	<div class="panel panel-default" id="chat-userlist">
+	<div class="panel-heading">
+    <h3 class="panel-title">Users!</h3>
+  	</div>
+		<div class="panel-body">
+			
+				<ul>
+					<li ng-repeat="user in users">
+						<strong>{{ user }}</strong>
+					</li>
+				</ul>
+			
+		</div>
+	</div>
+</div>
+
+
 	<div class="input-group" id="inn">
 	<input ng-model="currentMessage" class="form-control" ng-keypress="keyPress($event)" id="appendedInputButton" type="text" />
 	<span class="input-group-btn">
