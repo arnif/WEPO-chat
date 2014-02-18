@@ -30,10 +30,11 @@ app.controller("RoomController", ["$scope", "$routeParams", "$location", "Socket
 		});
 
 		socket.on("updateusers", function(rooms, users) {
-			// console.log("USER");
+			console.log("USER");
 			console.log(users);
 			if(rooms === $scope.roomName) {
 				$scope.users = users;
+				// $scope.apply();
 			}
 		});
 
@@ -152,10 +153,16 @@ app.controller("RoomController", ["$scope", "$routeParams", "$location", "Socket
 
 	$scope.create = function() {
 			var n = $("#room-name").val();
-			// console.log("name " +n);
+			console.log("name " +n);
 			$("#blackout").fadeOut();
 			$("#create-room").fadeOut();
-			$location.path("/room/" + n);
+			
+			socket.emit("joinroom", { room: n, pass: "" }, function(success, errorMessage) {
+				if (success) {
+					$location.path("/room/" + n);
+				}
+			});
+
 			socket.emit("rooms");
 
 	};
@@ -166,6 +173,16 @@ app.controller("RoomController", ["$scope", "$routeParams", "$location", "Socket
 		$("#blackout").fadeOut();
 	};
 
+	$scope.leaveRoom = function(){
+		if ($scope.roomName === "lobby") {
+			console.log("cant leave lobby");
+		} else {
+			socket.emit("partroom", $scope.roomName);
+			$location.path("/room/lobby");
+		}	
+		
+	};
+
 	function showError(stuff) {
 		$("#dangerMsg").fadeIn();
 		$("#mmsg").html(stuff);
@@ -173,5 +190,6 @@ app.controller("RoomController", ["$scope", "$routeParams", "$location", "Socket
 		$("#dangerMsg").fadeOut();
 		}, 10000);
 	}
+
 
 }]);

@@ -58,6 +58,15 @@
 			</div>
 		</div>
 	</div>
-	<input ng-model="currentMessage" class="form-control" ng-keypress="keyPress($event)" />
-	<button ng-click="send()">Send!</button>
+	<div class="input-group" id="inn">
+	<input ng-model="currentMessage" class="form-control" ng-keypress="keyPress($event)" id="appendedInputButton" type="text" />
+	<span class="input-group-btn">
+	<button ng-click="send()" class="btn btn-default" type="button">Send!</button>
+	 </span>
+	</div>
+
+
+
+
+
 </div>

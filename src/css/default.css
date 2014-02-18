@@ -7,7 +7,7 @@ li {
 }
 
 .overlay-box {
-	z-index: 3;
+	z-index: 10;
 	position: absolute;
 	top: 40%;
     left: 35%;
@@ -28,7 +28,12 @@ li {
 	display:none;
 }
 
+#inn {
+	z-index:0;
+}
+
 #blackout {
+	z-index: 1;
 	width:100%;
 	height:100%;
 	background-color: black;
