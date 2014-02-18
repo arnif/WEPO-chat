@@ -2,6 +2,9 @@ app.controller("RoomController", ["$scope", "$routeParams", "$location", "Socket
 	$scope.roomName = $routeParams.roomName;
 	$scope.currentMessage = "";
 
+	var meUser = SocketService.getUsername();
+	$scope.userName = meUser;
+
 	var socket = SocketService.getSocket();
 
 	if(socket) {
@@ -21,7 +24,7 @@ app.controller("RoomController", ["$scope", "$routeParams", "$location", "Socket
 
 		socket.on("updateusers", function(rooms, users) {
 			// console.log("USER");
-			// console.log(users);
+			console.log(users);
 			if(rooms === $scope.roomName) {
 				$scope.users = users;
 			}
@@ -31,18 +34,50 @@ app.controller("RoomController", ["$scope", "$routeParams", "$location", "Socket
 		socket.emit("rooms");
 		socket.on("roomlist", function(data) {
 			console.log(data);
-			$scope.rooms = data;
+			$scope.rooms = Object.keys(data);
 			$scope.$apply();
 		});
 
+		socket.on("kicked", function(room, me) {
+			// console.log("hoho " + me);
+
+			if (me === meUser) {
+				$location.path("/room/lobby");
+			}
+
+		});
 
 
 	}
 
 	$scope.send = function() {
 		if(socket) {
-			console.log("I sent a message to " + $scope.roomName + ": " + $scope.currentMessage);
-			socket.emit("sendmsg", { roomName: $scope.roomName, msg: $scope.currentMessage });
+
+
+			var split = $scope.currentMessage.split(" ");
+
+			if (split[0] === '/kick') {
+				var userToKick = split[1];
+
+				socket.emit("kick", { user: userToKick, room: $scope.roomName }, function(success) {
+						console.log(success);
+
+						if (success) {
+							console.log(userToKick + " has been kicked");
+
+						} else {
+
+							console.log("failed to kick");
+						}
+				});
+				
+			} else {
+
+				console.log("I sent a message to " + $scope.roomName + ": " + $scope.currentMessage);
+				socket.emit("sendmsg", { roomName: $scope.roomName, msg: $scope.currentMessage });
+
+			}
+
 			$scope.currentMessage = "";
 		}
 	};
@@ -57,6 +92,7 @@ app.controller("RoomController", ["$scope", "$routeParams", "$location", "Socket
 		console.log("NEW ROOM");
 		$("#blackout").fadeIn();
 		$("#create-room").fadeIn();
+		socket.emit("rooms");
 
 
 	};
@@ -67,6 +103,7 @@ app.controller("RoomController", ["$scope", "$routeParams", "$location", "Socket
 			$("#blackout").fadeOut();
 			$("#create-room").fadeOut();
 			$location.path("/room/" + n);
+			socket.emit("rooms");
 
 	};
 

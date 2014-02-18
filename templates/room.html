@@ -1,10 +1,10 @@
 <div class="overlay-box" id="create-room">
 	<button class="close" class="pull-left" ng-click="menuClose()">&times;</button>
-<h4>Join chat room</h4>
 
+<h5>Welcome <strong>{{ userName }}</strong>, please choose or create a chat room</h5>
 <ul>
 	<li ng-repeat="room in rooms">
-		{{ room }}
+		<a ng-href="#/room/{{room}}" ng-click="menuClose()">{{room}}</a>
 	</li>
 </ul>
 
@@ -26,12 +26,8 @@
 </div>
 
 <div class="container">
-	<h2>Welcome to {{ roomName }} 	<button class="btn btn-success">Join Room</button>
-	<button class="btn btn-primary" ng-click="createRoom()">Create Room</button></h2>
-
-
-
-
+	<h2>Welcome to {{ roomName }} 
+	<button class="btn btn-success" ng-click="createRoom()">Join Room</button></h2>
 
 
 	<div class="well">

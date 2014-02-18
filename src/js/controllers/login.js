@@ -23,6 +23,7 @@ app.controller("LoginController", ["$scope", "$location", "SocketService", funct
 					$location.path("/room/lobby");
 					setTimeout(function() {
 						$("#create-room").fadeIn();
+
 					},500);
 					
 				}
