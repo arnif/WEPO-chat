@@ -16,11 +16,15 @@ app.controller("LoginController", ["$scope", "$location", "SocketService", funct
 			}
 			socket.emit("adduser", $scope.username, function(available) {
 				if(available) {
-					$("#blackout").fadeOut();
+					// $("#blackout").fadeOut();
 					SocketService.setConnected(socket);
 					SocketService.setUsername($scope.username);
 
 					$location.path("/room/lobby");
+					setTimeout(function() {
+						$("#create-room").fadeIn();
+					},500);
+					
 				}
 				else {
 					$(".error-msg").fadeIn();

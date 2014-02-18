@@ -11,7 +11,7 @@ app.controller("RoomController", ["$scope", "$routeParams", "$location", "Socket
 
 
 		socket.on("updatechat", function(roomname, messageHistory) {
-			console.log(messageHistory);
+			// console.log(messageHistory);
 			$scope.messages = messageHistory;
 			$scope.$apply();
 			var wholeHeight = $(".chat-window")[0].scrollHeight;
@@ -19,11 +19,24 @@ app.controller("RoomController", ["$scope", "$routeParams", "$location", "Socket
 		
 		});
 
-		socket.on("updateusers", function(room, users) {
-			if(room === $scope.roomName) {
+		socket.on("updateusers", function(rooms, users) {
+			// console.log("USER");
+			// console.log(users);
+			if(rooms === $scope.roomName) {
 				$scope.users = users;
 			}
 		});
+
+
+		socket.emit("rooms");
+		socket.on("roomlist", function(data) {
+			console.log(data);
+			$scope.rooms = data;
+			$scope.$apply();
+		});
+
+
+
 	}
 
 	$scope.send = function() {
@@ -45,16 +58,22 @@ app.controller("RoomController", ["$scope", "$routeParams", "$location", "Socket
 		$("#blackout").fadeIn();
 		$("#create-room").fadeIn();
 
-		
 
-		$scope.create = function() {
+	};
+
+	$scope.create = function() {
 			var n = $("#room-name").val();
-			console.log("name " +n);
+			// console.log("name " +n);
 			$("#blackout").fadeOut();
 			$("#create-room").fadeOut();
 			$location.path("/room/" + n);
-		};
-
 
 	};
+
+	$scope.menuClose = function() {
+		console.log("close menu");
+		$("#create-room").fadeOut();
+		$("#blackout").fadeOut();
+	};
+
 }]);

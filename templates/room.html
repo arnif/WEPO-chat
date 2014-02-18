@@ -1,15 +1,17 @@
-<div class="container">
-	<h2>Welcome to {{ roomName }} 	<button class="btn btn-success">Join Room</button>
-	<button class="btn btn-primary" ng-click="createRoom()">Create Room</button></h2>
-
 <div class="overlay-box" id="create-room">
-<h4>Create chat room</h4>
+	<button class="close" class="pull-left" ng-click="menuClose()">&times;</button>
+<h4>Join chat room</h4>
 
+<ul>
+	<li ng-repeat="room in rooms">
+		{{ room }}
+	</li>
+</ul>
 
 <div class="row">
 <div class="col-lg-6">
 <div class="input-group">
-<input ng-model="roomname" class="form-control" placeholder="Room name" id="room-name">
+<input ng-model="roomname" class="form-control" placeholder="Create Room" id="room-name">
 <span class="input-group-btn">
 <button class="btn btn-primary" type="button" ng-click="create()">Create!</button>
 </span>
@@ -17,12 +19,18 @@
 </div><!-- /.col-lg-6 -->
 </div><!-- /.row -->
 
-
 <!-- <input ng-model="username" placeholder="Insert name here"> -->
 <!-- <button ng-click="connect()">Connect!</button> -->
 <span ng-bind="message" class="error-msg alert alert-danger"></span>
 
 </div>
+
+<div class="container">
+	<h2>Welcome to {{ roomName }} 	<button class="btn btn-success">Join Room</button>
+	<button class="btn btn-primary" ng-click="createRoom()">Create Room</button></h2>
+
+
+
 
 
 
