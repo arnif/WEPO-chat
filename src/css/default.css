@@ -24,6 +24,10 @@ li {
 	display:none;
 }
 
+#dangerMsg {
+	display:none;
+}
+
 #blackout {
 	width:100%;
 	height:100%;

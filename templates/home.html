@@ -5,9 +5,9 @@
 <div class="row">
 <div class="col-lg-6">
 <div class="input-group">
-<input ng-model="username" class="form-control" placeholder="Username" id="user-name">
+<input ng-model="username" class="form-control" placeholder="Username" id="user-name" ng-keypress="keyPress2($event)" autofocus="autofocus">
 <span class="input-group-btn">
-<button class="btn btn-primary" type="button" ng-click="connect()">Connect!</button>
+<button class="btn btn-primary" type="button" ng-click="connect()" >Connect!</button>
 </span>
 </div><!-- /input-group -->
 </div><!-- /.col-lg-6 -->

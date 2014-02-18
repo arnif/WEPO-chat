@@ -9,10 +9,12 @@ app.controller("RoomController", ["$scope", "$routeParams", "$location", "Socket
 
 	if(socket) {
 		socket.emit("joinroom", { room: $scope.roomName, pass: "" }, function(success, errorMessage) {
-			console.log(errorMessage);
+			// console.log(errorMessage);
 
 			if(errorMessage === "banned")
 			{
+				showError("You are banned from " + $scope.roomName);
+
 				$location.path("/room/lobby");
 			}
 		});
@@ -47,7 +49,9 @@ app.controller("RoomController", ["$scope", "$routeParams", "$location", "Socket
 			// console.log("hoho " + me);
 
 			if (me === meUser) {
+				console.log("im out");
 				$location.path("/room/lobby");
+				showError("You have been kicked from " + $scope.roomName);
 			}
 
 		});
@@ -56,6 +60,9 @@ app.controller("RoomController", ["$scope", "$routeParams", "$location", "Socket
 			// console.log("hoho " + me);
 
 			if (me === meUser) {
+			
+				showError("You have been banned from " + $scope.roomName);
+				
 				$location.path("/room/lobby");
 			}
 
@@ -77,6 +84,10 @@ app.controller("RoomController", ["$scope", "$routeParams", "$location", "Socket
 						console.log(success);
 
 						if (success) {
+
+							showError(userToKick + " has been kicked from " + $scope.roomName);
+			
+							
 							console.log(userToKick + " has been kicked");
 
 						} else {
@@ -104,6 +115,7 @@ app.controller("RoomController", ["$scope", "$routeParams", "$location", "Socket
 
 				socket.emit("unban", { user: userToUnban, room: $scope.roomName }, function(success) {
 					if(success) {
+						showError(userToUnban + " has been unbaned from " + $scope.roomName);
 						console.log(userToUnban + " has been Unbanned");
 					}
 					else {
@@ -153,5 +165,13 @@ app.controller("RoomController", ["$scope", "$routeParams", "$location", "Socket
 		$("#create-room").fadeOut();
 		$("#blackout").fadeOut();
 	};
+
+	function showError(stuff) {
+		$("#dangerMsg").fadeIn();
+		$("#mmsg").html(stuff);
+		setTimeout(function()  {
+		$("#dangerMsg").fadeOut();
+		}, 10000);
+	}
 
 }]);
