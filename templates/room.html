@@ -1,3 +1,4 @@
+<!-- <div id="close-room"><button class="close" ng-click="leaveRoom()">&times;</button></div> -->
 <div class="overlay-box" id="create-room">
 	<button class="close" class="pull-left" ng-click="menuClose()">&times;</button>
 
@@ -22,26 +23,32 @@
 <!-- <input ng-model="username" placeholder="Insert name here"> -->
 <!-- <button ng-click="connect()">Connect!</button> -->
 <span ng-bind="message" class="error-msg alert alert-danger"></span>
-
 </div>
 
-<div class="container">
-	<h2>Welcome to {{ roomName }} <button class="btn btn-danger btn-xs" ng-click="leaveRoom()">Leave room</button>
-	<button class="btn btn-success pull-right" ng-click="createRoom()">Join Room</button></h2>
 
-<div class="alert alert-block alert-danger" id="dangerMsg">
-  <button type="button" class="close" data-dismiss="alert">&times;</button>
- <span id="mmsg"></span>
-</div>
+
+<div class="container littledown">
+
+	<div class="top">
+	<button class="btn btn-success" ng-click="createRoom()">Join / Create Room</button><button class="btn btn-danger pull-right" ng-click="disconnect()">Logout {{userName}}</button>
+	</div>
+
+<div class="row">
+	<div class="col-xs-6 col-md-4">
 <ul class="nav nav-tabs sevensixfive">
   <li ng-repeat="ro in rName" ng-class="setActive(ro)">
-		<a ng-href="#/room/{{ro}}">{{ro}}</a>
+		<a ng-href="#/room/{{ro}}" id="{{ro}}">{{ro}}</a><button class="close close-room" ng-click="leaveRoom()">&times;</button>
 	</li>
 </ul>
-<div class="whole-shit">
-	<div class="panel panel-default sevensixfive">
+</div>
+</div>
+
+
+<div class="row">
+	<div class="col-xs-12 col-sm-6 col-md-8">
+	<div class="panel panel-default">
 		<div class="panel-heading">
-    <h3 class="panel-title">Topic!</h3>
+    <h3 class="panel-title">{{topic}}</h3>
   	</div>
 		<div class="panel-body">
 			
@@ -59,20 +66,51 @@
 		
 		</div>
 	</div>
-	<div class="panel panel-default" id="chat-userlist">
+</div>
+<div class="col-xs-6 col-sm-3 hidden-xs">
+	<div class="panel panel-default">
 	<div class="panel-heading">
     <h3 class="panel-title">Users!</h3>
   	</div>
 		<div class="panel-body">
 			
-				<ul>
-					<li ng-repeat="user in users">
-						<strong>{{ user }}</strong>
+				<ul class="chat-window">
+					<li ng-repeat="op in ops">
+						<strong>@{{ op }}</strong><button ng-click="pm(op)" class="pm btn btn-xs btn-primary" id="{{op}}">PM</button>
+					</li>
+					<li ng-repeat="user in users"> 
+						<strong>{{ user }}</strong><button ng-click="pm(user)" class="pm btn btn-xs btn-primary" id="{{user}}">PM</button>
 					</li>
 				</ul>
 			
 		</div>
 	</div>
+</div>
+<div class="private-message">
+	<button class="close" class="pull-left" ng-click="closePrvt()">&times;</button>
+	<div class="panel panel-default">
+		<div class="panel-heading">
+			<h3 class="panel-title">Private chat with {{sender}}</h3>
+		</div>
+  <div class="panel-body pmheight">
+ 	<ul>
+		<li>asjkdglkasd</li>
+		<li>asjkdglkasd</li>
+		<li>asjkdglkasd</li>
+		<li>asjkdglkasd</li>
+		<li>asjkdglkasd</li>
+	</ul>
+	 </div>
+	 <div class="input-group">
+	<input ng-model="privateMsg" class="form-control" type="text" />
+	<span class="input-group-btn">
+	<button ng-click="sendPrivateMsg()" class="btn btn-default" type="button">Reply!</button>
+	 </span>
+	</div>
+</div>
+		
+</div>
+
 </div>
 
 

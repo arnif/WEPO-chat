@@ -26,6 +26,28 @@ li {
 
 #dangerMsg {
 	display:none;
+	position:fixed;
+	top:0;
+	width:100%;
+}
+
+.private-message {
+	/*background-color: #fff;*/
+width: 350px;
+height: 480px;
+position: absolute;
+z-index: 10;
+left: 712px;
+display: none;
+}
+
+.pmheight {
+	height:340px;
+	overflow: auto;
+}
+
+.littledown {
+	margin-top:40px;
 }
 
 #inn {
@@ -37,11 +59,26 @@ li {
 	width: 355px;
 	top: 104px;
 	position: absolute;
-	right: 216px
+	right: 216px;
+	height: 482px;
+}
+
+.top {
+	padding-top:25px;
+	padding-bottom: 25px;
 }
 
 .sevensixfive {
-	width:765px;
+	width:745px;
+	top: 3px;
+	position: relative;
+}
+
+.close-room {
+	display:none;
+	position: absolute;
+	top: -4px;
+	right: 6px
 }
 
 #blackout {
@@ -51,8 +88,7 @@ li {
 	background-color: black;
 	opacity: 0.7;
 	position: absolute;
-
-	/*display:none;*/
+	top:0;
 }
 
 #user-name, #room-name {

@@ -85,6 +85,7 @@ io.sockets.on('connection', function (socket) {
 				fn(true);
 				//Add user to room.
 				rooms[room].addUser(socket.username);
+				first = false;
 				//Keep track of the room in the user object.
 				users[socket.username].channels[room] = room;
 				//Send the room information to the client.
@@ -145,7 +146,7 @@ io.sockets.on('connection', function (socket) {
 	});
 
 	// when the user disconnects.. perform this
-	socket.on('disconnect', function(){
+	socket.on('logout', function(){
 		if(socket.username) {
 			//If the socket doesn't have a username the client joined and parted without
 			//chosing a username, so we just close the socket without any cleanup.
@@ -188,7 +189,7 @@ io.sockets.on('connection', function (socket) {
 		console.log(socket.username + " opped " + opObj.user + " from " + opObj.room);
 		if(rooms[opObj.room].ops[socket.username] !== undefined) {
 			//Remove the user from the room roster.
-			delete rooms[opObj.room].users[opObj.user];
+			delete rooms[opObj.room].users[opObj.user]; //TOKTETTA UT!
 			//Op the user.
 			rooms[opObj.room].ops[opObj.user] = opObj.user;
 			//Broadcast to the room who got opped.
