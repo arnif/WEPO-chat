@@ -24,6 +24,10 @@ li {
 	display:none;
 }
 
+#help {
+	display:none;
+}
+
 #dangerMsg {
 	display:none;
 	position:fixed;
@@ -52,7 +56,7 @@ display: none;
 
 #inn {
 	z-index:0;
-	width:768px;
+	width:751px;
 }
 
 #chat-userlist {
@@ -111,4 +115,12 @@ top: -42px;
 .chat-window {
 	height:400px;
 	overflow: auto;
+}
+
+#helpText {
+	margin: 0 0 5px;
+}
+
+#helper {
+	margin-top: 0px;
 }

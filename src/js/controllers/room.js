@@ -254,6 +254,15 @@ app.controller("RoomController", ["$scope", "$routeParams", "$location", "Socket
 
 	};
 
+	$scope.helpBox = function() {
+		console.log("Help");
+		$("#blackout").fadeIn();
+		$("#help").fadeIn();
+		//socket.emit("rooms");
+
+
+	};
+
 	$scope.create = function() {
 			var n = $("#room-name").val();
 			console.log("creat roomname " +n);
@@ -275,6 +284,11 @@ app.controller("RoomController", ["$scope", "$routeParams", "$location", "Socket
 	$scope.menuClose = function() {
 		console.log("close menu");
 		$("#create-room").fadeOut();
+		$("#blackout").fadeOut();
+	};
+
+	$scope.helpClose = function() {
+		$("#help").fadeOut();
 		$("#blackout").fadeOut();
 	};
 
