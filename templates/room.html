@@ -1,0 +1,138 @@
+<!-- <div id="close-room"><button class="close" ng-click="leaveRoom()">&times;</button></div> -->
+<div class="overlay-box" id="create-room">
+	<button class="close" class="pull-left" ng-click="menuClose()">&times;</button>
+
+<h5>Welcome <strong>{{ userName }}</strong>, please choose or create a chat room</h5>
+<ul>
+	<li ng-repeat="room in rooms">
+		<a ng-href="#/room/{{room}}" ng-click="menuClose()">{{room}}</a>
+	</li>
+</ul>
+
+<div class="row">
+<div class="col-lg-6">
+<div class="input-group">
+<input ng-model="roomname" class="form-control" placeholder="Create Room" id="room-name">
+<span class="input-group-btn">
+<button class="btn btn-primary" type="button" ng-click="create()">Create!</button>
+</span>
+</div><!-- /input-group -->
+</div><!-- /.col-lg-6 -->
+</div><!-- /.row -->
+
+<!-- <input ng-model="username" placeholder="Insert name here"> -->
+<!-- <button ng-click="connect()">Connect!</button> -->
+<span ng-bind="message" class="error-msg alert alert-danger"></span>
+</div>
+
+<div class="overlay-box" id="help">
+	<button class="close" class="pull-left" ng-click="helpClose()">&times;</button>
+<h3 id="helper">Help</h3>
+<div id="helpText">
+	<p><strong>/settopic</strong> - Set channel topic</p>
+	<p><strong>/op</strong> - Make user a operator in a channel</p>
+	<p><strong>/deop</strong> - Remove user as operator</p>
+	<p><strong>/kick</strong> - kick user from chat room</p>
+	<p><strong>/ban</strong> - ban user from chat room</p>
+	<p><strong>/unban</strong> - unban user from chat room</p>
+</div>
+</div>
+
+<div class="container littledown">
+
+	<div class="top">
+	<button class="btn btn-success" ng-click="createRoom()">Join / Create Room</button>
+	<button class="btn btn-info" ng-click="helpBox()">Help</button>
+	<button class="btn btn-danger pull-right" ng-click="disconnect()">Logout {{userName}}</button>
+	</div>
+
+<div class="row">
+	<div class="col-xs-6 col-md-4">
+<ul class="nav nav-tabs sevensixfive">
+  <li ng-repeat="ro in rName" ng-class="setActive(ro)">
+		<a ng-href="#/room/{{ro}}" id="{{ro}}">{{ro}}</a><button class="close close-room" ng-click="leaveRoom()">&times;</button>
+	</li>
+</ul>
+</div>
+</div>
+
+
+
+
+<div class="row">
+	<div class="col-xs-12 col-sm-6 col-md-8">
+
+		<div class="private-message">
+	<button class="close" class="pull-left" ng-click="closePrvt()">&times;</button>
+	<div class="panel panel-default">
+		<div class="panel-heading">
+			<h3 class="panel-title">Private chat history</h3>
+		</div>
+  <div class="panel-body pmheight">
+ 	<ul class="pm-window">
+		<li ng-repeat="pm in pms">
+			{{ pm.message }}
+		</li>
+	</ul>
+	 </div>
+</div>		
+</div>
+
+
+	<div class="panel panel-default">
+		<div class="panel-heading">
+    <h3 class="panel-title">{{topic}} <button ng-click="showPm()" class="pull-right btn btn-xs btn-info">PM history</button></h3>
+  	</div>
+		<div class="panel-body">
+			
+				<ul style="list-style: none" class="chat-window">
+					<li ng-repeat="message in messages" class="chat-msg">
+						<span>
+							<strong>[{{ message.timestamp | date:"HH:mm:ss" }}]:</strong>
+							<strong>
+								{{ message.nick }}
+							</strong>
+							{{ message.message }}
+						</span>
+					</li>
+				</ul>
+		
+		</div>
+
+	</div>
+</div>
+<div class="col-xs-6 col-sm-3 hidden-xs">
+	<div class="panel panel-default">
+	<div class="panel-heading">
+    <h3 class="panel-title">Users!</h3>
+  	</div>
+		<div class="panel-body">
+			
+				<ul class="chat-window">
+					<li ng-repeat="op in ops" class="uMarg">
+						<strong>@{{ op }}</strong><button ng-click="pm(op)" class="pm pull-right btn btn-xs btn-primary" id="{{op}}">PM</button>
+					</li>
+					<li ng-repeat="user in users" class="uMarg"> 
+						<strong>{{ user }}</strong><button ng-click="pm(user)" class="pm pull-right btn btn-xs btn-primary" id="{{user}}">PM</button>
+					</li>
+				</ul>
+			
+		</div>
+	</div>
+</div>
+
+</div>
+
+
+	<div class="input-group" id="inn">
+	<input ng-model="currentMessage" class="form-control" ng-keypress="keyPress($event)" id="appendedInputButton" type="text" />
+	<span class="input-group-btn">
+	<button ng-click="send()" class="btn btn-default" type="button">Send!</button>
+	 </span>
+	</div>
+
+
+
+
+
+</div>

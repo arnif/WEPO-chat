@@ -1,0 +1,130 @@
+body {
+	background-color: white;
+}
+
+li {
+	list-style: none;
+}
+
+.overlay-box {
+	z-index: 10;
+	position: absolute;
+	top: 40%;
+    left: 35%;
+    margin-top: -100px;
+    margin-left: -50px;
+    background-color:white;
+    width:400px;
+    padding: 30px;
+    border-radius: 10px;
+	/*display:none;*/
+}
+
+#create-room {
+	display:none;
+}
+
+#help {
+	display:none;
+}
+
+#dangerMsg {
+	display:none;
+	position:fixed;
+	top:0;
+	width:100%;
+}
+
+.private-message {
+
+width: 350px;
+height: 480px;
+position: absolute;
+z-index: 10;
+right:0;
+display: none;
+}
+
+.pmheight {
+	height:440px;
+	overflow: auto;
+}
+
+.uMarg {
+	margin-bottom: 5px;
+}
+
+.littledown {
+	margin-top:40px;
+}
+
+#inn {
+	z-index:0;
+	width:751px;
+}
+
+#chat-userlist {
+	width: 355px;
+	top: 104px;
+	position: absolute;
+	right: 216px;
+	height: 482px;
+}
+
+.top {
+	padding-top:25px;
+	padding-bottom: 25px;
+}
+
+.sevensixfive {
+	width:745px;
+	top: 3px;
+	position: relative;
+}
+
+.close-room {
+	display:none;
+	position: absolute;
+	top: -4px;
+	right: 6px
+}
+
+#blackout {
+	z-index: 1;
+	width:100%;
+	height:100%;
+	background-color: black;
+	opacity: 0.5;
+	position: absolute;
+	top:0;
+}
+
+#user-name, #room-name {
+	width:264px;
+}
+
+.error-msg {
+	margin-top:10px;
+	display:none;
+}
+
+.room-btns{
+
+float: left;
+left: 280px;
+position: relative;
+top: -42px;
+}
+
+.chat-window {
+	height:400px;
+	overflow: auto;
+}
+
+#helpText {
+	margin: 0 0 5px;
+}
+
+#helper {
+	margin-top: 0px;
+}
