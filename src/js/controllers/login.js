@@ -15,7 +15,20 @@ app.controller("LoginController", ["$scope", "$location", "SocketService", funct
 					return;
 			}
 
-			$scope.username = $scope.username.replace(" ", "-");
+			$scope.username = $scope.username.replace(/\s/g, "-");
+
+
+			var first = ($scope.username.charAt(0));
+
+			if (first.search(/[^A-Za-z | ^0-9]/) != -1) {	
+				$(".error-msg").fadeIn();
+					$scope.message = "Invalid token in name";
+					setTimeout(function () {
+						$(".error-msg").fadeOut();
+					},5500);
+					return;
+				
+			} 
 
 			socket.emit("adduser", $scope.username, function(available) {
 				if(available) {

@@ -145,7 +145,7 @@ app.controller("RoomController", ["$scope", "$routeParams", "$location", "Socket
 			var wholeHeight = $(".pm-window")[0].scrollHeight;
 			$(".pm-window").scrollTop(wholeHeight);
 
-			showError("PM recived: <strong>" + message + "</strong>", "info");
+			showError("PM recived from <strong>" + from + "</strong>", "info");
 
 			$scope.currentMessage = "/pm " + from + " ";
 
@@ -282,8 +282,9 @@ app.controller("RoomController", ["$scope", "$routeParams", "$location", "Socket
 
 					if (status) {
 						console.log("SENTPM");
-						showError("Private message sent to <strong>" + pmObj.nick + "</strong> message: <strong>"+ msg + "</strong>", "success");
+						showError("Private message sent to <strong>" + pmObj.nick + "</strong>", "success");
 						PrivateService.addPm(pmObj);
+						$scope.showPm();
 					}
 			
 				});
@@ -302,8 +303,12 @@ app.controller("RoomController", ["$scope", "$routeParams", "$location", "Socket
 	};
 
 	$scope.keyPress = function($event) {
+		console.log($event);
 		if($event.keyCode === 13) {
 			$scope.send();
+		}
+		else if ($event.keyCode === 27) {
+			$scope.currentMessage = "";
 		}
 	};
 
@@ -332,12 +337,14 @@ app.controller("RoomController", ["$scope", "$routeParams", "$location", "Socket
 			$("#blackout").fadeOut();
 			$("#create-room").fadeOut();
 
-			n = n.replace(" ", "-");
+			if (n.length > 10) {
+				showError("Room name too long", "danger");
+				return;
+			}
+
+			n = n.replace(/\s/g, "-");
 
 			var first = (n.charAt(0));
-
-			console.log("IS NR ?");
-			console.log(isNaN(first));
 
 			if (first.search(/[^A-Za-z | ^0-9]/) != -1) {	
 				showError("Invalid token in room name ", "danger");
@@ -449,8 +456,6 @@ app.controller("RoomController", ["$scope", "$routeParams", "$location", "Socket
 	$scope.closePrvt = function() {
 
 		if ($(".private-message").is(":visible") === true){
-			$(".private-message").css({"left": "712px"});
-			$(".private-message").animate({ "right": "-=162px" }, "slow" );
 			$(".private-message").hide();
 		}
 	};
