@@ -50,6 +50,10 @@ display: none;
 	overflow: auto;
 }
 
+.uMarg {
+	margin-bottom: 5px;
+}
+
 .littledown {
 	margin-top:40px;
 }

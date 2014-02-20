@@ -5,6 +5,15 @@ app.controller("RoomController", ["$scope", "$routeParams", "$location", "Socket
 	var meUser = SocketService.getUsername();
 	$scope.userName = meUser;
 
+	// console.log("me user " + meUser);
+
+	if (meUser === "") {
+		showError("Please log in to continue ", "danger");
+		$location.path("/");
+		return;
+	}
+	
+
 	var joinedRooms = RoomService.getJoinedRooms();
 
 	var socket = SocketService.getSocket();
@@ -51,15 +60,12 @@ app.controller("RoomController", ["$scope", "$routeParams", "$location", "Socket
 		});
 
 		socket.on("updateusers", function(rooms, users, ops) {
-			// console.log("OPS");
-			// console.log(ops);
-			// console.log("USER");
-			// console.log(users);
+
 			if(rooms === $scope.roomName) {
 
 				$scope.users = users;
 				$scope.ops = ops;
-				// $scope.$apply();
+				$scope.$apply();
 
 			}
 		});
@@ -136,6 +142,9 @@ app.controller("RoomController", ["$scope", "$routeParams", "$location", "Socket
 			PrivateService.addPm(obj);
 			$scope.showPm();
 
+			var wholeHeight = $(".pm-window")[0].scrollHeight;
+			$(".pm-window").scrollTop(wholeHeight);
+
 			showError("PM recived: <strong>" + message + "</strong>", "info");
 
 			$scope.currentMessage = "/pm " + from + " ";
@@ -152,6 +161,11 @@ app.controller("RoomController", ["$scope", "$routeParams", "$location", "Socket
 	$scope.send = function() {
 
 		if(socket) {
+
+			if ($scope.currentMessage === "") {
+				$("#appendedInputButton").focus();
+				return;
+			}
 
 			var split = $scope.currentMessage.split(" ");
 
@@ -256,6 +270,11 @@ app.controller("RoomController", ["$scope", "$routeParams", "$location", "Socket
 				split.shift();
 				split.shift();
 				var msg = split.join(" ");
+				if (msg === "") {
+					$scope.currentMessage = "/pm " + pmObj.nick + " ";
+					$("#appendedInputButton").focus();
+					return;
+				}
 				pmObj.message = pmObj.recv + "> " + msg;
 				// console.log(pmObj);
 
@@ -263,7 +282,7 @@ app.controller("RoomController", ["$scope", "$routeParams", "$location", "Socket
 
 					if (status) {
 						console.log("SENTPM");
-						showError("PM sent to <strong>" + pmObj.nick + "</strong> message: <strong>"+ msg + "</strong>", "success");
+						showError("Private message sent to <strong>" + pmObj.nick + "</strong> message: <strong>"+ msg + "</strong>", "success");
 						PrivateService.addPm(pmObj);
 					}
 			
@@ -303,8 +322,7 @@ app.controller("RoomController", ["$scope", "$routeParams", "$location", "Socket
 		$scope.closePrvt();
 		$("#blackout").fadeIn();
 		$("#help").fadeIn();
-		//socket.emit("rooms");
-
+		
 
 	};
 
@@ -313,6 +331,8 @@ app.controller("RoomController", ["$scope", "$routeParams", "$location", "Socket
 			console.log("creat roomname " +n);
 			$("#blackout").fadeOut();
 			$("#create-room").fadeOut();
+
+			n = n.replace(" ", "-");
 			
 			socket.emit("joinroom", { room: n, pass: "" }, function(success, errorMessage) {
 				if (success) {
@@ -330,16 +350,19 @@ app.controller("RoomController", ["$scope", "$routeParams", "$location", "Socket
 		// console.log("close menu");
 		$("#create-room").fadeOut();
 		$("#blackout").fadeOut();
+		
 	};
 
 	$scope.helpClose = function() {
 		$("#help").fadeOut();
 		$("#blackout").fadeOut();
+		
 	};
 
 	$scope.leaveRoom = function(){
 		if ($scope.roomName === "lobby") {
-			console.log("cant leave lobby");
+			// console.log("cant leave lobby");
+			showError("Cant Leave lobby", "info");
 		} else {
 			socket.emit("partroom", $scope.roomName);
 			RoomService.removeJoinedRoom($scope.roomName);
@@ -371,6 +394,7 @@ app.controller("RoomController", ["$scope", "$routeParams", "$location", "Socket
 		
 		setTimeout(function() {
 			$("#blackout").fadeIn();
+			$("#dangerMsg").fadeOut();
 		},2000);
 		$location.path("/");
 		
@@ -409,7 +433,7 @@ app.controller("RoomController", ["$scope", "$routeParams", "$location", "Socket
 	};
 
 	$scope.closePrvt = function() {
-		
+
 		if ($(".private-message").is(":visible") === true){
 			$(".private-message").css({"left": "712px"});
 			$(".private-message").animate({ "right": "-=162px" }, "slow" );
@@ -437,9 +461,7 @@ app.controller("RoomController", ["$scope", "$routeParams", "$location", "Socket
 
 		$("#dangerMsg").fadeIn();
 		$("#mmsg").html(stuff);
-		setTimeout(function()  {
-		$("#dangerMsg").fadeOut();
-		}, 10000);
+		
 	}
 
 

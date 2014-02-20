@@ -90,11 +90,11 @@
 		<div class="panel-body">
 			
 				<ul class="chat-window">
-					<li ng-repeat="op in ops">
-						<strong>@{{ op }}</strong><button ng-click="pm(op)" class="pm btn btn-xs btn-primary" id="{{op}}">PM</button>
+					<li ng-repeat="op in ops" class="uMarg">
+						<strong>@{{ op }}</strong><button ng-click="pm(op)" class="pm pull-right btn btn-xs btn-primary" id="{{op}}">PM</button>
 					</li>
-					<li ng-repeat="user in users"> 
-						<strong>{{ user }}</strong><button ng-click="pm(user)" class="pm btn btn-xs btn-primary" id="{{user}}">PM</button>
+					<li ng-repeat="user in users" class="uMarg"> 
+						<strong>{{ user }}</strong><button ng-click="pm(user)" class="pm pull-right btn btn-xs btn-primary" id="{{user}}">PM</button>
 					</li>
 				</ul>
 			
@@ -108,7 +108,7 @@
 			<h3 class="panel-title">Private chat history</h3>
 		</div>
   <div class="panel-body pmheight">
- 	<ul>
+ 	<ul class="pm-window">
 		<li ng-repeat="pm in pms">
 			{{ pm.message }}
 		</li>
