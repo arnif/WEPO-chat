@@ -1,4 +1,4 @@
-app.controller("RoomController", ["$scope", "$routeParams", "$location", "SocketService", "RoomService", function($scope, $routeParams, $location, SocketService, RoomService) {
+app.controller("RoomController", ["$scope", "$routeParams", "$location", "SocketService", "RoomService", "PrivateService", function($scope, $routeParams, $location, SocketService, RoomService, PrivateService) {
 	$scope.roomName = $routeParams.roomName;
 	$scope.currentMessage = "";
 
@@ -53,13 +53,13 @@ app.controller("RoomController", ["$scope", "$routeParams", "$location", "Socket
 		socket.on("updateusers", function(rooms, users, ops) {
 			// console.log("OPS");
 			// console.log(ops);
-			console.log("USER");
+			// console.log("USER");
 			// console.log(users);
 			if(rooms === $scope.roomName) {
 
 				$scope.users = users;
 				$scope.ops = ops;
-				// $scope.apply();
+				// $scope.$apply();
 
 			}
 		});
@@ -126,12 +126,32 @@ app.controller("RoomController", ["$scope", "$routeParams", "$location", "Socket
 
 		});
 
+		socket.on("recv_privatemsg", function (from, message){
+			console.log("RECV");
+			console.log("sec " + message);
+			var obj = {};
+			obj.nick = from;
+			obj.recv = $scope.userName;
+			obj.message = message;
+			PrivateService.addPm(obj);
+			$scope.showPm();
+
+			showError("PM recived: <strong>" + message + "</strong>", "info");
+
+			$scope.currentMessage = "/pm " + from + " ";
+
+			$("#appendedInputButton").focus();
+
+			// $scope.$apply();
+
+		});
+
 
 	}
 
 	$scope.send = function() {
-		if(socket) {
 
+		if(socket) {
 
 			var split = $scope.currentMessage.split(" ");
 
@@ -228,6 +248,29 @@ app.controller("RoomController", ["$scope", "$routeParams", "$location", "Socket
 				});
 			}
 
+			else if(split[0] == "/pm") {
+
+				var pmObj = {};
+				pmObj.recv = $scope.userName;
+				pmObj.nick = split[1];
+				split.shift();
+				split.shift();
+				var msg = split.join(" ");
+				pmObj.message = pmObj.recv + "> " + msg;
+				// console.log(pmObj);
+
+				socket.emit("privatemsg", pmObj, function(status) {
+
+					if (status) {
+						console.log("SENTPM");
+						showError("PM sent to <strong>" + pmObj.nick + "</strong> message: <strong>"+ msg + "</strong>", "success");
+						PrivateService.addPm(pmObj);
+					}
+			
+				});
+
+			}
+
 			else {
 
 				// console.log("I sent a message to " + $scope.roomName + ": " + $scope.currentMessage);
@@ -246,7 +289,8 @@ app.controller("RoomController", ["$scope", "$routeParams", "$location", "Socket
 	};
 
 	$scope.createRoom = function() {
-		console.log("NEW ROOM");
+		// console.log("NEW ROOM");
+		$scope.closePrvt();
 		$("#blackout").fadeIn();
 		$("#create-room").fadeIn();
 		socket.emit("rooms");
@@ -255,7 +299,8 @@ app.controller("RoomController", ["$scope", "$routeParams", "$location", "Socket
 	};
 
 	$scope.helpBox = function() {
-		console.log("Help");
+		// console.log("Help");
+		$scope.closePrvt();
 		$("#blackout").fadeIn();
 		$("#help").fadeIn();
 		//socket.emit("rooms");
@@ -282,7 +327,7 @@ app.controller("RoomController", ["$scope", "$routeParams", "$location", "Socket
 	};
 
 	$scope.menuClose = function() {
-		console.log("close menu");
+		// console.log("close menu");
 		$("#create-room").fadeOut();
 		$("#blackout").fadeOut();
 	};
@@ -329,25 +374,50 @@ app.controller("RoomController", ["$scope", "$routeParams", "$location", "Socket
 		},2000);
 		$location.path("/");
 		
-		
-		
 
+	};
+
+	$scope.showPm = function() {
+
+		$scope.pms = PrivateService.getPmHistory();
+
+		$scope.$apply(); //dont like!
+
+		if ($(".private-message").is(":visible") === false) {
+
+			$(".private-message").css({"left": "712px"});
+			$(".private-message").show();
+			$(".private-message").animate({ "left": "-=162px" }, "slow" );
+		}
 	};
 
 
 	$scope.pm = function(sendTo) {
-		console.log(sendTo);
-		$scope.sender = sendTo;
-		$(".private-message").css({"left": "712px"});
-		$(".private-message").show();
-		$(".private-message").animate({ "left": "-=162px" }, "slow" );
+		// console.log("sendTo " +sendTo);
+		if (sendTo === $scope.userName) {
+			showError("Why would you want to talk to your self ?", "info");
+			return;
+		}
+
+		$scope.currentMessage = "/pm " + sendTo + " ";
+
+		$("#appendedInputButton").focus();
+
+		// $scope.pms = PrivateService.getPmHistoryFrom(sendTo, meUser);
+		
+
 	};
 
 	$scope.closePrvt = function() {
-		$(".private-message").css({"left": "712px"});
-		$(".private-message").animate({ "right": "-=162px" }, "slow" );
-		$(".private-message").hide();
+		
+		if ($(".private-message").is(":visible") === true){
+			$(".private-message").css({"left": "712px"});
+			$(".private-message").animate({ "right": "-=162px" }, "slow" );
+			$(".private-message").hide();
+		}
 	};
+
+
 
 	function showError(stuff, stile) {
 

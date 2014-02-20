@@ -27,15 +27,14 @@
 
 <div class="overlay-box" id="help">
 	<button class="close" class="pull-left" ng-click="helpClose()">&times;</button>
-
 <h3 id="helper">Help</h3>
 <div id="helpText">
-	<p>/settopic - Set channel topic</p>
-	<p>/op exampleUserName - Make user a operator in a channel</p>
-	<p>/deop - Remove user as operator</p>
-	<p>/kick - kick user from chat room</p>
-	<p>/ban - ban user from chat room</p>
-	<p>/unban - unban user from chat room</p>
+	<p><strong>/settopic</strong> - Set channel topic</p>
+	<p><strong>/op</strong> - Make user a operator in a channel</p>
+	<p><strong>/deop</strong> - Remove user as operator</p>
+	<p><strong>/kick</strong> - kick user from chat room</p>
+	<p><strong>/ban</strong> - ban user from chat room</p>
+	<p><strong>/unban</strong> - unban user from chat room</p>
 </div>
 </div>
 
@@ -106,23 +105,15 @@
 	<button class="close" class="pull-left" ng-click="closePrvt()">&times;</button>
 	<div class="panel panel-default">
 		<div class="panel-heading">
-			<h3 class="panel-title">Private chat with {{sender}}</h3>
+			<h3 class="panel-title">Private chat history</h3>
 		</div>
   <div class="panel-body pmheight">
  	<ul>
-		<li>asjkdglkasd</li>
-		<li>asjkdglkasd</li>
-		<li>asjkdglkasd</li>
-		<li>asjkdglkasd</li>
-		<li>asjkdglkasd</li>
+		<li ng-repeat="pm in pms">
+			{{ pm.message }}
+		</li>
 	</ul>
 	 </div>
-	 <div class="input-group">
-	<input ng-model="privateMsg" class="form-control" type="text" />
-	<span class="input-group-btn">
-	<button ng-click="sendPrivateMsg()" class="btn btn-default" type="button">Reply!</button>
-	 </span>
-	</div>
 </div>
 		
 </div>
