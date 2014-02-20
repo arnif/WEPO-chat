@@ -2,6 +2,7 @@
   "name": "chatapp",
   "description": "WEPO Chat client assignment",
   "version": "0.0.1",
+"main": "chatserver.js",
   "dependencies": {
     "express": "3.1.0",
     "socket.io": "0.9.13"
