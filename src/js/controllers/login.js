@@ -14,6 +14,9 @@ app.controller("LoginController", ["$scope", "$location", "SocketService", funct
 					},5500);
 					return;
 			}
+
+			$scope.username = $scope.username.replace(" ", "-");
+
 			socket.emit("adduser", $scope.username, function(available) {
 				if(available) {
 					// $("#blackout").fadeOut();

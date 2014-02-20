@@ -36,17 +36,17 @@ li {
 }
 
 .private-message {
-	/*background-color: #fff;*/
+
 width: 350px;
 height: 480px;
 position: absolute;
 z-index: 10;
-left: 712px;
+right:0;
 display: none;
 }
 
 .pmheight {
-	height:340px;
+	height:440px;
 	overflow: auto;
 }
 

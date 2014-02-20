@@ -333,6 +333,17 @@ app.controller("RoomController", ["$scope", "$routeParams", "$location", "Socket
 			$("#create-room").fadeOut();
 
 			n = n.replace(" ", "-");
+
+			var first = (n.charAt(0));
+
+			console.log("IS NR ?");
+			console.log(isNaN(first));
+
+			if (first.search(/[^A-Za-z | ^0-9]/) != -1) {	
+				showError("Invalid token in room name ", "danger");
+				return;
+				
+			} 
 			
 			socket.emit("joinroom", { room: n, pass: "" }, function(success, errorMessage) {
 				if (success) {
@@ -405,13 +416,16 @@ app.controller("RoomController", ["$scope", "$routeParams", "$location", "Socket
 
 		$scope.pms = PrivateService.getPmHistory();
 
-		$scope.$apply(); //dont like!
+		if(!$scope.$$phase) {
+			$scope.$apply();
+		}
+		
 
 		if ($(".private-message").is(":visible") === false) {
 
-			$(".private-message").css({"left": "712px"});
-			$(".private-message").show();
-			$(".private-message").animate({ "left": "-=162px" }, "slow" );
+			// $(".private-message").css({"right": "0"});
+			$(".private-message").fadeIn();
+			// $(".private-message").animate({ "right": "-=162px" }, "slow" );
 		}
 	};
 

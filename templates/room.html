@@ -61,9 +61,27 @@
 
 <div class="row">
 	<div class="col-xs-12 col-sm-6 col-md-8">
+
+		<div class="private-message">
+	<button class="close" class="pull-left" ng-click="closePrvt()">&times;</button>
 	<div class="panel panel-default">
 		<div class="panel-heading">
-    <h3 class="panel-title">{{topic}}</h3>
+			<h3 class="panel-title">Private chat history</h3>
+		</div>
+  <div class="panel-body pmheight">
+ 	<ul class="pm-window">
+		<li ng-repeat="pm in pms">
+			{{ pm.message }}
+		</li>
+	</ul>
+	 </div>
+</div>		
+</div>
+
+
+	<div class="panel panel-default">
+		<div class="panel-heading">
+    <h3 class="panel-title">{{topic}} <button ng-click="showPm()" class="pull-right btn btn-xs btn-info">PM history</button></h3>
   	</div>
 		<div class="panel-body">
 			
@@ -80,6 +98,7 @@
 				</ul>
 		
 		</div>
+
 	</div>
 </div>
 <div class="col-xs-6 col-sm-3 hidden-xs">
@@ -100,22 +119,6 @@
 			
 		</div>
 	</div>
-</div>
-<div class="private-message">
-	<button class="close" class="pull-left" ng-click="closePrvt()">&times;</button>
-	<div class="panel panel-default">
-		<div class="panel-heading">
-			<h3 class="panel-title">Private chat history</h3>
-		</div>
-  <div class="panel-body pmheight">
- 	<ul class="pm-window">
-		<li ng-repeat="pm in pms">
-			{{ pm.message }}
-		</li>
-	</ul>
-	 </div>
-</div>
-		
 </div>
 
 </div>

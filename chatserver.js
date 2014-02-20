@@ -46,6 +46,8 @@ io.sockets.on('connection', function (socket) {
 			rooms[room] = new Room();
 			//Op the user if he creates the room.
 			rooms[room].ops[socket.username] = socket.username;
+
+			delete rooms[room].users[socket.username]; //baetvid!!
 			//If the user wants to password protect the room we set the password.
 			if(pass !== undefined) {
 				rooms[room].setPassword(pass);
