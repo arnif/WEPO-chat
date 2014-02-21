@@ -5,6 +5,10 @@ app.controller("RoomController", ["$scope", "$routeParams", "$location", "Socket
 	var meUser = SocketService.getUsername();
 	$scope.userName = meUser;
 
+	var msgCount = 0;
+
+	var skammakrokur = false;
+
 	// console.log("me user " + meUser);
 
 	if (meUser === "") {
@@ -136,8 +140,8 @@ app.controller("RoomController", ["$scope", "$routeParams", "$location", "Socket
 			console.log("RECV");
 			console.log("sec " + message);
 			var obj = {};
-			obj.nick = from;
-			obj.recv = $scope.userName;
+			obj.sender = from;
+			obj.nick = $scope.userName;
 			obj.message = message;
 			PrivateService.addPm(obj);
 			$scope.showPm();
@@ -145,7 +149,7 @@ app.controller("RoomController", ["$scope", "$routeParams", "$location", "Socket
 			var wholeHeight = $(".pm-window")[0].scrollHeight;
 			$(".pm-window").scrollTop(wholeHeight);
 
-			showError("PM recived from <strong>" + from + "</strong>", "info");
+			showError("Private message recived from <strong>" + from + "</strong>", "info");
 
 			$scope.currentMessage = "/pm " + from + " ";
 
@@ -166,6 +170,35 @@ app.controller("RoomController", ["$scope", "$routeParams", "$location", "Socket
 				$("#appendedInputButton").focus();
 				return;
 			}
+
+			msgCount += 1;
+			delay = 20;
+
+			// console.log("msg count " + msgCount);
+
+			if (skammakrokur === false) {
+				setTimeout(function() {
+					if (skammakrokur === false) {
+						// console.log("RESET msg");
+						msgCount = 0;
+					}
+				}, 10000);
+			}
+
+			if (msgCount > 5) {
+				$(".skamm").prop('disabled', true);
+				skammakrokur = true;
+				showError("Play nice! dont't be spammin' You're muted for 25 sec.", "danger");
+				setTimeout(function() {
+					// console.log("skammakrokur");
+					msgCount = 0;
+					showError("You play now, but play nice!", "info");
+					$(".skamm").prop('disabled', false);
+					skammakrokur = false;
+				}, 25000);
+				return;
+			}
+
 
 			var split = $scope.currentMessage.split(" ");
 
@@ -265,7 +298,7 @@ app.controller("RoomController", ["$scope", "$routeParams", "$location", "Socket
 			else if(split[0] == "/pm") {
 
 				var pmObj = {};
-				pmObj.recv = $scope.userName;
+				pmObj.sender = $scope.userName;
 				pmObj.nick = split[1];
 				split.shift();
 				split.shift();
@@ -275,7 +308,7 @@ app.controller("RoomController", ["$scope", "$routeParams", "$location", "Socket
 					$("#appendedInputButton").focus();
 					return;
 				}
-				pmObj.message = pmObj.recv + "> " + msg;
+				pmObj.message = msg;
 				// console.log(pmObj);
 
 				socket.emit("privatemsg", pmObj, function(status) {
@@ -303,7 +336,6 @@ app.controller("RoomController", ["$scope", "$routeParams", "$location", "Socket
 	};
 
 	$scope.keyPress = function($event) {
-		console.log($event);
 		if($event.keyCode === 13) {
 			$scope.send();
 		}
@@ -482,6 +514,5 @@ app.controller("RoomController", ["$scope", "$routeParams", "$location", "Socket
 		$("#mmsg").html(stuff);
 		
 	}
-
 
 }]);

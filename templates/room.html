@@ -71,7 +71,8 @@
   <div class="panel-body pmheight">
  	<ul class="pm-window">
 		<li ng-repeat="pm in pms">
-			{{ pm.message }}
+			<p><span class="pull-left"><strong>{{pm.sender}}></strong></span><span class="theMsg">{{ pm.message }}</span>
+			<span class="pull-right text-muted"><small> - sent to {{pm.nick}}</small></span></p>
 		</li>
 	</ul>
 	 </div>
@@ -125,9 +126,9 @@
 
 
 	<div class="input-group" id="inn">
-	<input ng-model="currentMessage" class="form-control" ng-keydown="keyPress($event)" id="appendedInputButton" type="text" />
+	<input ng-model="currentMessage" class="form-control skamm" ng-keydown="keyPress($event)" id="appendedInputButton" type="text" />
 	<span class="input-group-btn">
-	<button ng-click="send()" class="btn btn-default" type="button">Send!</button>
+	<button ng-click="send()" class="btn btn-default skamm" type="button">Send!</button>
 	 </span>
 	</div>
 
