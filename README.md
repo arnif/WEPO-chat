@@ -9,7 +9,9 @@ npm -d install
 
 chmod +x runclient.bat (*nix only)
 
-./runclient.bat
+./runclient.bat (*nix only)
+
+runclient.bat (windows only)
 
 node chatserver.js
 
