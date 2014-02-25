@@ -1,11 +1,9 @@
-WEPO-chat
-=========
-
 1. How To run:
+====
 
 You have to have npm, python and node installed!
 
-Clone this repo git clone https://github.com/arnif/WEPO-chat.git
+git clone https://github.com/arnif/WEPO-chat.git
 
 npm -d install
 
@@ -19,6 +17,7 @@ Now the chat should be availeble at http://localhost:8000
 
 
 2. How to develop:
+====
 
 npm install bower -g
 
