@@ -30,3 +30,5 @@ grunt
 make sure there are no errors.
 
 Run the program (1).
+
+If you want to add external dependencies, they should be installed using bower
